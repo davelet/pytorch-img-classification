@@ -4,15 +4,17 @@ from torchvision.transforms import transforms
 from matplotlib import pyplot as plt
 import numpy as np
 from torchvision import datasets
+from torchvision import models
 
 # https://towardsdatascience.com/how-to-train-an-image-classifier-in-pytorch-and-use-it-to-perform-basic-inference-on-single-images-99465a1e9bf5
-data_dir = '/datadrive/FastAI/data/aerial_photos/train'
-test_transforms = transforms.Compose([transforms.Resize(224),
-                                      transforms.ToTensor(),
-                                      ])
+data_dir = './data'
+test_transforms = transforms.Compose([transforms.Resize(224), transforms.ToTensor(), ])
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-model = torch.load('./aerialmodel.pth')
+# model = models.resnet50(pretrained=True)
+# cp = torch.load('./aerialmodel2020-06-15_12:12:07.187282.pth')
+# model = model.load_state_dict(cp['state_dict'])
+model = torch.load('./aerialmodel2020-06-15_14:41:48.969373.pth')
 model.eval()
 
 
@@ -28,14 +30,12 @@ def predict_image(image):
 
 def get_random_images(num):
     data = datasets.ImageFolder(data_dir, transform=test_transforms)
-    classes = data.classes
     indices = list(range(len(data)))
     np.random.shuffle(indices)
     idx = indices[:num]
     from torch.utils.data.sampler import SubsetRandomSampler
     sampler = SubsetRandomSampler(idx)
-    loader = torch.utils.data.DataLoader(data,
-                                         sampler=sampler, batch_size=num)
+    loader = torch.utils.data.DataLoader(data, sampler=sampler, batch_size=num)
     dataiter = iter(loader)
     images, labels = dataiter.next()
     return images, labels

@@ -86,7 +86,8 @@ if __name__ == '__main__':
                 model.train()
 
     time = datetime.now().__str__().replace(' ', '_')
-    torch.save({'state_dict': model.state_dict()}, './aerialmodel' + time + '.pth')
+    torch.save(model, './aerialmodel' + time + '.pth')
+    # torch.save({'state_dict': model.state_dict()}, './aerialmodel' + time + '.pth')
     plt.plot(train_losses, label='Training loss')
     plt.plot(test_losses, label='Validation loss')
     plt.legend(frameon=False)
