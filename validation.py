@@ -48,6 +48,7 @@ fig = plt.figure(figsize=(10, 10))
 for ii in range(len(images)):
     image = to_pil(images[ii])
     index = predict_image(image)
+    # index 是预测的结果，label是实际的结果
     sub = fig.add_subplot(1, len(images), ii + 1)
     res = int(labels[ii]) == index
     sub.set_title(str(classes[index]) + ":" + str(res))
